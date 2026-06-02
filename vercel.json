@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd j-apprends-a-cuisiner && npm install && npm run build",
+  "outputDirectory": "j-apprends-a-cuisiner/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
