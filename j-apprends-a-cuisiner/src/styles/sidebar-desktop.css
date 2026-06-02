@@ -1,0 +1,686 @@
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR DESKTOP LAYOUT — Saveurs du Cameroun
+   Layout avec barre latérale pour utilisateurs connectés
+═══════════════════════════════════════════════════════ */
+
+/* ── Body override quand connecté ── */
+body.user-logged-in {
+  background: #FAF6EE;
+}
+
+/* ── App Wrapper Desktop ── */
+.app-wrapper.app-desktop {
+  display: flex !important;
+  flex-direction: row !important;
+  max-width: 100% !important;
+  min-height: 100vh;
+  background: #FAF6EE;
+  box-shadow: none !important;
+}
+
+/* ── Sidebar ── */
+.app-sidebar {
+  width: 260px;
+  height: 100vh;
+  background: #FFFFFF;
+  border-right: 1px solid #EDE8DF;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+  z-index: 200;
+  scrollbar-width: none;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+              width 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.app-sidebar::-webkit-scrollbar { display: none; }
+
+.app-sidebar.sidebar-collapsed {
+  width: 0;
+  border-right: none;
+  overflow: hidden;
+}
+
+/* ── Main Area ── */
+.app-main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #FAF6EE;
+}
+
+/* ── Sidebar Header (brand + close) ── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1rem 1rem;
+  border-bottom: 1px solid #F0EBE2;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.sidebar-logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #A07830, #D4A853);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 12px rgba(212,168,83,0.3);
+  flex-shrink: 0;
+}
+
+.sidebar-brand-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2A1F10;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.sidebar-brand-sub {
+  font-size: 0.66rem;
+  color: #9A8A72;
+  margin-top: 1px;
+  white-space: nowrap;
+}
+
+.sidebar-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #F5F0E8;
+  border: none;
+  color: #9A8A72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.sidebar-close:hover { background: #EDE5D5; color: #2A1F10; }
+.sidebar-close .material-symbols-outlined { font-size: 1rem; }
+
+/* ── Sidebar Navigation ── */
+.sidebar-nav {
+  flex: 1;
+  padding: 0.6rem 0 1rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav-item {
+  margin: 1px 0.65rem;
+}
+
+.sidebar-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: #6B5E4A;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+}
+.sidebar-nav-btn:hover {
+  background: #FBF6EE;
+  color: #2A1F10;
+}
+.sidebar-nav-btn:hover .sidebar-icon {
+  color: #D4A853;
+}
+
+.sidebar-icon {
+  font-size: 1.2rem;
+  color: #B0A090;
+  flex-shrink: 0;
+  transition: color 0.18s;
+}
+
+.sidebar-label {
+  flex: 1;
+}
+
+.sidebar-arrow {
+  font-size: 1rem;
+  color: #C5BAA8;
+}
+
+/* ── Active nav item ── */
+.sidebar-nav-item.sidebar-active .sidebar-nav-btn {
+  background: rgba(212, 168, 83, 0.12);
+  color: #A07830;
+  font-weight: 600;
+}
+.sidebar-nav-item.sidebar-active .sidebar-icon {
+  color: #D4A853;
+}
+
+/* ── Sidebar Separator ── */
+.sidebar-separator {
+  height: 1px;
+  background: #F0EBE2;
+  margin: 0.5rem 0.65rem;
+}
+
+/* ── Desktop Header ── */
+.desktop-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  height: 68px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #EDE8DF;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+/* Search bar */
+.dh-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #F5F0E8;
+  border: 1.5px solid #EDE8DF;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  flex: 1;
+  max-width: 420px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dh-search:focus-within {
+  border-color: #D4A853;
+  box-shadow: 0 0 0 3px rgba(212,168,83,0.1);
+}
+
+.dh-search-icon {
+  font-size: 1.05rem;
+  color: #9A8A72;
+  flex-shrink: 0;
+}
+
+.dh-search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #2A1F10;
+  font-size: 0.875rem;
+  font-family: inherit;
+  width: 100%;
+}
+.dh-search-input::placeholder { color: #B0A090; }
+.dh-search-input:focus { box-shadow: none; }
+
+/* Actions side */
+.dh-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* User greeting */
+.dh-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  padding: 0.3rem 0.75rem 0.3rem 0.3rem;
+  border-radius: 50px;
+  transition: background 0.18s;
+}
+.dh-user:hover { background: #F5F0E8; }
+
+.dh-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2D6A4F, #40916c);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dh-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.dh-greeting {
+  font-size: 0.68rem;
+  color: #9A8A72;
+}
+
+.dh-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2A1F10;
+  white-space: nowrap;
+}
+
+/* Action buttons (download, cart, menu) */
+.dh-action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dh-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: #6B5E4A;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  position: relative;
+}
+.dh-action-btn:hover {
+  background: #F5F0E8;
+  color: #2A1F10;
+}
+.dh-action-btn .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+.dh-action-label {
+  font-size: 0.6rem;
+  color: #9A8A72;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.dh-action-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dh-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #D4A853;
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+/* ── Override page-content for desktop ── */
+body.user-logged-in .page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: calc(var(--nav-h) + 0.5rem);
+  background: #FAF6EE;
+}
+
+/* ── Override page-hero for light theme ── */
+body.user-logged-in .page-hero {
+  background: linear-gradient(135deg, #3D2B0A, #2D6A4F) !important;
+  padding: 2.5rem 2rem;
+}
+
+/* ── Override regions grid for light theme ── */
+body.user-logged-in .regions-grid-full {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* ── Override recipe cards for light theme ── */
+body.user-logged-in .recipe-card {
+  background: #FFFFFF;
+  border-color: #EDE8DF;
+}
+body.user-logged-in .recipe-card:hover {
+  border-color: #D4A853;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+body.user-logged-in .rc-body {
+  background: #FFFFFF;
+}
+
+body.user-logged-in .rc-title {
+  color: #2A1F10;
+}
+
+body.user-logged-in .rc-region {
+  color: #9A8A72;
+}
+
+body.user-logged-in .rc-time {
+  color: #9A8A72;
+}
+
+/* ── Override region cards for light theme ── */
+body.user-logged-in .region-card-full {
+  background: #FFFFFF;
+  border-color: #EDE8DF;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+body.user-logged-in .rcf-body {
+  background: #FFFFFF;
+}
+
+body.user-logged-in .rcf-body h3 {
+  color: #2A1F10;
+}
+
+body.user-logged-in .rcf-body p {
+  color: #6B5E4A;
+}
+
+/* ── Override profile page for light theme ── */
+body.user-logged-in .profile-page {
+  background: #FAF6EE;
+}
+
+body.user-logged-in .pl-tabs {
+  background: #FFFFFF;
+  border-bottom: 1px solid #EDE8DF;
+}
+
+body.user-logged-in .pl-tab {
+  color: #6B5E4A;
+}
+
+body.user-logged-in .pl-tab.active {
+  color: #A07830;
+  border-bottom-color: #D4A853;
+}
+
+body.user-logged-in .pl-dish-card {
+  background: #FFFFFF;
+  border-color: #EDE8DF;
+}
+
+body.user-logged-in .pl-dish-name {
+  color: #2A1F10;
+}
+
+body.user-logged-in .pl-dish-region {
+  color: #D4A853;
+}
+
+/* ── Override search page for light theme ── */
+body.user-logged-in .search-page {
+  background: #FAF6EE;
+}
+
+body.user-logged-in .search-hero {
+  background: #FFFFFF;
+  border-bottom: 1px solid #EDE8DF;
+}
+
+body.user-logged-in .search-input-wrap {
+  background: #F5F0E8;
+  border-color: #EDE8DF;
+}
+
+body.user-logged-in .search-main-input {
+  color: #2A1F10;
+}
+
+body.user-logged-in .search-main-input::placeholder {
+  color: #B0A090;
+}
+
+body.user-logged-in .search-hero-title {
+  color: #2A1F10;
+}
+
+body.user-logged-in .search-hero-sub {
+  color: #6B5E4A;
+}
+
+/* ── Override favorites page for light theme ── */
+body.user-logged-in .page-hero h1 {
+  color: #FFFFFF;
+}
+
+body.user-logged-in .page-hero p {
+  color: rgba(255,255,255,0.8);
+}
+
+/* ── Override bottom nav for desktop ── */
+body.user-logged-in .bottom-nav {
+  background: rgba(255,255,255,0.97);
+  border-top: 1px solid #EDE8DF;
+}
+
+body.user-logged-in .nav-btn {
+  color: #9A8A72;
+}
+
+body.user-logged-in .nav-btn.active {
+  color: #D4A853;
+}
+
+body.user-logged-in .nav-btn.active .material-symbols-outlined {
+  color: #D4A853;
+}
+
+body.user-logged-in .nav-btn:hover {
+  color: #A07830;
+}
+
+/* ── Region detail for light theme ── */
+body.user-logged-in .rd-stats {
+  background: #FFFFFF;
+  border-top: 1px solid #EDE8DF;
+  border-bottom: 1px solid #EDE8DF;
+}
+
+body.user-logged-in .rd-stat {
+  color: #6B5E4A;
+}
+
+body.user-logged-in .rd-stat strong {
+  color: #2A1F10;
+}
+
+body.user-logged-in .rd-recipes-header {
+  background: #FAF6EE;
+  padding: 1.5rem 2rem 0.5rem;
+}
+
+body.user-logged-in .rd-recipes-header h2 {
+  color: #2A1F10;
+}
+
+body.user-logged-in .rd-recipes-header p {
+  color: #6B5E4A;
+}
+
+body.user-logged-in .recipes-grid.rd-recipes-grid {
+  padding: 1rem 2rem 2rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 300;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  }
+  .app-sidebar.sidebar-collapsed {
+    transform: translateX(-260px);
+    width: 260px;
+    border-right: none;
+  }
+  .app-sidebar:not(.sidebar-collapsed) {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    display: block;
+  }
+}
+
+/* Sidebar overlay (mobile) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 250;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sidebar-overlay.visible {
+  opacity: 1;
+  display: block;
+}
+
+/* ── Coming Soon Page ── */
+.coming-soon-page { min-height: 60vh; }
+
+.coming-soon-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.cs-card {
+  background: #FFFFFF;
+  border: 1px solid #EDE8DF;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+body.user-logged-in .cs-card { background: #FFFFFF; }
+
+.cs-icon {
+  font-size: 3rem;
+  color: #D4A853;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.cs-card h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2A1F10;
+  margin-bottom: 0.5rem;
+}
+
+.cs-card p {
+  color: #6B5E4A;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.cs-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #A07830, #D4A853);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cs-back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,168,83,0.35); }
+.cs-back-btn .material-symbols-outlined { font-size: 1rem; }
+
+/* ── Override page-hero icon color for light pages ── */
+body.user-logged-in .page-hero-icon {
+  font-size: 2.5rem;
+  color: rgba(255,255,255,0.85);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Adjust regions grid padding in desktop ── */
+body.user-logged-in .regions-page {
+  background: #FAF6EE;
+}
+
+/* ── Scrollbar style for main area ── */
+body.user-logged-in .page-content::-webkit-scrollbar {
+  width: 6px;
+}
+body.user-logged-in .page-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+body.user-logged-in .page-content::-webkit-scrollbar-thumb {
+  background: #D4C4A8;
+  border-radius: 3px;
+}
+
+/* ── Profile page logout button in desktop light theme ── */
+body.user-logged-in .pl-footer-actions {
+  padding: 2rem;
+}
+body.user-logged-in .pl-logout-btn {
+  background: rgba(198,42,71,0.08);
+  color: #c62a47;
+  border-color: rgba(198,42,71,0.2);
+}
+body.user-logged-in .pl-logout-btn:hover {
+  background: rgba(198,42,71,0.15);
+  border-color: rgba(198,42,71,0.4);
+}

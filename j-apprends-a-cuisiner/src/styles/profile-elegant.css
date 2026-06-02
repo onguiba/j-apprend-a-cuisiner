@@ -1,0 +1,383 @@
+/* ============================================
+   PAGE PROFIL UTILISATEUR - DESIGN MODERNE COMME L'IMAGE
+   Grille large avec grandes cartes et images carrées
+   ============================================ */
+
+/* Background général */
+body {
+  background: #faf8f5;
+  font-family: 'Inter', 'Poppins', sans-serif;
+}
+
+/* Conteneur principal - TRÈS LARGE */
+.user-recipes-fullscreen-grid {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  background: #faf8f5;
+}
+
+/* Carte - Design moderne comme l'image */
+.user-recipe-fullscreen-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-recipe-fullscreen-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Image - CARRÉE et grande comme dans l'image */
+.user-recipe-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Carré parfait */
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.user-recipe-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.user-recipe-fullscreen-card:hover .user-recipe-image-wrapper img {
+  transform: scale(1.08);
+}
+
+/* Badge "1 recette" en haut à droite de l'image */
+.recipe-count-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(139, 99, 61, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
+
+/* Icône de région en bas à gauche de l'image */
+.region-icon-badge {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Overlay au survol */
+.user-recipe-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 25px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.user-recipe-fullscreen-card:hover .user-recipe-overlay {
+  opacity: 1;
+}
+
+/* Bouton de visualisation */
+.user-recipe-view-btn {
+  background: #fff;
+  color: #333;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-recipe-view-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.user-recipe-view-btn .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* Contenu de la carte - sous l'image */
+.user-recipe-content {
+  padding: 20px;
+  background: #fff;
+}
+
+/* Titre de la région */
+.user-recipe-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+/* Description */
+.user-recipe-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Badge de région avec icône */
+.user-recipe-region {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #5a8f7b;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.user-recipe-region .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* Métadonnées - badges en ligne */
+.user-recipe-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* Badge de difficulté */
+.user-recipe-difficulty {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.user-recipe-difficulty.facile {
+  color: #5a8f7b;
+}
+
+.user-recipe-difficulty.moyen {
+  color: #d4a574;
+}
+
+.user-recipe-difficulty.difficile {
+  color: #c85a54;
+}
+
+.user-recipe-difficulty .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* Temps */
+.user-recipe-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.user-recipe-time .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* Responsive Design - Grille adaptative */
+@media (min-width: 1600px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+    padding: 25px 15px;
+  }
+
+  .user-recipe-title {
+    font-size: 20px;
+  }
+
+  .user-recipe-content {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 20px 12px;
+  }
+
+  .user-recipe-title {
+    font-size: 18px;
+  }
+
+  .user-recipe-description {
+    font-size: 13px;
+  }
+
+  .user-recipe-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-recipes-fullscreen-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 15px 10px;
+  }
+
+  .user-recipe-title {
+    font-size: 16px;
+  }
+
+  .user-recipe-description {
+    font-size: 12px;
+  }
+
+  .user-recipe-content {
+    padding: 14px;
+  }
+  
+  .recipe-count-badge {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Animation d'entrée */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-recipe-fullscreen-card {
+  animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.user-recipe-fullscreen-card:nth-child(1) { animation-delay: 0.05s; }
+.user-recipe-fullscreen-card:nth-child(2) { animation-delay: 0.08s; }
+.user-recipe-fullscreen-card:nth-child(3) { animation-delay: 0.11s; }
+.user-recipe-fullscreen-card:nth-child(4) { animation-delay: 0.14s; }
+.user-recipe-fullscreen-card:nth-child(5) { animation-delay: 0.17s; }
+.user-recipe-fullscreen-card:nth-child(6) { animation-delay: 0.2s; }
+.user-recipe-fullscreen-card:nth-child(7) { animation-delay: 0.23s; }
+.user-recipe-fullscreen-card:nth-child(8) { animation-delay: 0.26s; }
+
+/* Section profil */
+.profile-section {
+  margin-bottom: 40px;
+}
+
+.profile-section .section-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-section .section-title .material-symbols-outlined {
+  font-size: 32px;
+  color: #8b633d;
+}
+
+/* Page profil - Background */
+.profile-page {
+  background: #faf8f5;
+  min-height: 100vh;
+}
+
+/* Header de la page profil */
+.profile-header {
+  background: linear-gradient(135deg, #f5f1eb 0%, #faf8f5 100%);
+  padding: 40px 30px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+}

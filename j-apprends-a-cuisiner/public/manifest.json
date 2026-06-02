@@ -1,0 +1,17 @@
+{
+  "name": "NLAMB-SARRE",
+  "short_name": "NLAMB-SARRE",
+  "description": "Découvrez la richesse de la cuisine camerounaise",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C0A08",
+  "theme_color": "#ee7c2b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

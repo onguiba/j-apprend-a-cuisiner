@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NLAMB-SARRE</string>
+    <string name="title_activity_main">NLAMB-SARRE</string>
+    <string name="package_name">com.nlamb-sarre.app</string>
+    <string name="custom_url_scheme">com.nlamb-sarre.app</string>
+</resources>

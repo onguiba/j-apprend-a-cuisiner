@@ -1,0 +1,188 @@
+/* Thème Clair (par défaut) */
+:root {
+  --primary: #ee7c2b;
+  --primary-hover: #d6691f;
+  --primary-light: rgba(238, 124, 43, 0.1);
+  
+  --background-light: #f8f7f6;
+  --background-dark: #221810;
+  --surface: #ffffff;
+  --surface-secondary: #f4f4f5;
+  
+  --text-primary: #1b130d;
+  --text-secondary: #9a6c4c;
+  --text-muted: #71717a;
+  --text-inverse: #ffffff;
+  
+  --border-light: #e4e4e7;
+  --border-medium: #d4d4d8;
+  --border-dark: #3f3f46;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-primary: rgba(238, 124, 43, 0.2);
+  
+  --gradient-primary: linear-gradient(135deg, #ee7c2b 0%, #d6691f 100%);
+  --gradient-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+/* Thème Sombre */
+.dark {
+  --surface: #27272a;
+  --surface-secondary: #18181b;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-inverse: #1b130d;
+  
+  --border-light: #3f3f46;
+  --border-medium: #52525b;
+  --border-dark: #71717a;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Transitions pour le changement de thème */
+* {
+  transition: 
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Classes utilitaires pour les thèmes */
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-surface-secondary {
+  background-color: var(--surface-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.border-default {
+  border-color: var(--border-light);
+}
+
+.shadow-default {
+  box-shadow: var(--shadow-md);
+}
+
+/* Bouton de basculement de thème */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border-light);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-toggle .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* Animation pour le changement de thème */
+@keyframes themeTransition {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.theme-transitioning {
+  animation: themeTransition 0.3s ease-in-out;
+}
+
+/* Styles spécifiques au thème pour les composants */
+.recipe-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+}
+
+.search-input-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+}
+
+.notification-btn {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+}
+
+.bottom-nav {
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid var(--border-light);
+}
+
+.dark .bottom-nav {
+  background: rgba(39, 39, 42, 0.9);
+}
+
+/* Couleurs d'accent pour différentes régions */
+.region-littoral { --accent: #0ea5e9; }
+.region-ouest { --accent: #8b5cf6; }
+.region-extreme-nord { --accent: #f59e0b; }
+.region-centre { --accent: #10b981; }
+.region-nord-ouest { --accent: #ef4444; }
+.region-sud-ouest { --accent: #06b6d4; }
+
+.region-card.active {
+  --primary: var(--accent, #ee7c2b);
+}
+
+/* Media queries pour les préférences système */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --surface: #27272a;
+    --surface-secondary: #18181b;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --border-light: #3f3f46;
+    --border-medium: #52525b;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

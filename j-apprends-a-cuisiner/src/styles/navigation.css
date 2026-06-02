@@ -1,0 +1,128 @@
+/* Navigation Bottom */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 28rem;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-light);
+  padding: 0.75rem 1.5rem;
+  z-index: 50;
+}
+
+.dark .bottom-nav {
+  background: rgba(39, 39, 42, 0.9);
+  border-top-color: var(--border-dark);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #a1a1aa;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-item:hover {
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+}
+
+.nav-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-fab {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4rem;
+  height: 4rem;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--shadow-primary);
+  transition: all 0.3s ease;
+}
+
+.nav-fab:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 12px 32px var(--shadow-primary);
+}
+
+.nav-fab:active {
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-fab .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* Responsive Navigation */
+@media (max-width: 480px) {
+  .bottom-nav {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-fab {
+    width: 3.5rem;
+    height: 3.5rem;
+    top: -1.75rem;
+  }
+  
+  .nav-fab .material-symbols-outlined {
+    font-size: 1.75rem;
+  }
+}
+
+/* Navigation Animations */
+@keyframes navItemPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nav-item.pulse {
+  animation: navItemPulse 0.3s ease-in-out;
+}
+
+.nav-fab.pulse {
+  animation: navItemPulse 0.4s ease-in-out;
+}

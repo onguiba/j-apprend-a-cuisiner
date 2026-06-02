@@ -1,0 +1,57 @@
+/* CSS simplifié pour test */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    background: #f8f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+.app-container {
+    min-height: 100vh;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.primary-color {
+    color: #ee7c2b;
+}
+
+.bg-primary {
+    background: #ee7c2b;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.btn {
+    background: #ee7c2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background: #d6691f;
+}
+
+.success {
+    background: #e8f5e8;
+    color: #2e7d32;
+    padding: 15px;
+    border-radius: 10px;
+}
