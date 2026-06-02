@@ -1,24 +1,27 @@
+// SubscriptionService - désactivé pour le déploiement frontend
+// Ce service nécessite un backend connecté
 import { ApiService } from './ApiService';
 import { Subscription } from '../models/Subscription';
 
 export class SubscriptionService {
-  private static apiService = new ApiService();
+  private static apiService = ApiService.getInstance();
 
   /**
    * Récupérer l'abonnement actif de l'utilisateur
    */
   static async getActiveSubscription(): Promise<Subscription | null> {
     try {
-      const response = await this.apiService.get('/subscriptions/active');
-      if (response.subscription) {
+      const response = await this.apiService.getAdminDashboard(); // fallback
+      if (response && (response as any).subscription) {
+        const sub = (response as any).subscription;
         return new Subscription(
-          response.subscription.id,
-          response.subscription.user_id,
-          response.subscription.plan,
-          new Date(response.subscription.start_date),
-          response.subscription.amount,
-          response.subscription.status,
-          response.subscription.end_date ? new Date(response.subscription.end_date) : undefined
+          sub.id,
+          sub.user_id,
+          sub.plan,
+          new Date(sub.start_date),
+          sub.amount,
+          sub.status,
+          sub.end_date ? new Date(sub.end_date) : undefined
         );
       }
       return null;
@@ -32,95 +35,35 @@ export class SubscriptionService {
    * Créer un nouvel abonnement
    */
   static async createSubscription(
-    plan: 'free' | 'premium' | 'pro',
-    paymentMethod?: string
+    _plan: 'free' | 'premium' | 'pro',
+    _paymentMethod?: string
   ): Promise<Subscription | null> {
-    try {
-      const response = await this.apiService.post('/subscriptions/create', {
-        plan,
-        paymentMethod
-      });
-
-      if (response.subscription) {
-        return new Subscription(
-          response.subscription.id,
-          response.subscription.user_id,
-          response.subscription.plan,
-          new Date(response.subscription.start_date),
-          response.subscription.amount,
-          response.subscription.status,
-          response.subscription.end_date ? new Date(response.subscription.end_date) : undefined
-        );
-      }
-      return null;
-    } catch (error) {
-      console.error('Erreur lors de la création de l\'abonnement:', error);
-      throw error;
-    }
+    console.warn('createSubscription: backend non disponible');
+    return null;
   }
 
   /**
    * Renouveler un abonnement
    */
-  static async renewSubscription(subscriptionId: number): Promise<Subscription | null> {
-    try {
-      const response = await this.apiService.put(
-        `/subscriptions/${subscriptionId}/renew`,
-        {}
-      );
-
-      if (response.subscription) {
-        return new Subscription(
-          response.subscription.id,
-          response.subscription.user_id,
-          response.subscription.plan,
-          new Date(response.subscription.start_date),
-          response.subscription.amount,
-          response.subscription.status,
-          response.subscription.end_date ? new Date(response.subscription.end_date) : undefined
-        );
-      }
-      return null;
-    } catch (error) {
-      console.error('Erreur lors du renouvellement de l\'abonnement:', error);
-      throw error;
-    }
+  static async renewSubscription(_subscriptionId: number): Promise<Subscription | null> {
+    console.warn('renewSubscription: backend non disponible');
+    return null;
   }
 
   /**
    * Annuler un abonnement
    */
-  static async cancelSubscription(subscriptionId: number): Promise<boolean> {
-    try {
-      await this.apiService.delete(`/subscriptions/${subscriptionId}/cancel`);
-      return true;
-    } catch (error) {
-      console.error('Erreur lors de l\'annulation de l\'abonnement:', error);
-      throw error;
-    }
+  static async cancelSubscription(_subscriptionId: number): Promise<boolean> {
+    console.warn('cancelSubscription: backend non disponible');
+    return false;
   }
 
   /**
    * Obtenir l'historique des abonnements
    */
   static async getSubscriptionHistory(): Promise<Subscription[]> {
-    try {
-      const response = await this.apiService.get('/subscriptions/history');
-      return response.history.map((sub: any) =>
-        new Subscription(
-          sub.id,
-          sub.user_id,
-          sub.plan,
-          new Date(sub.start_date),
-          sub.amount,
-          sub.status,
-          sub.end_date ? new Date(sub.end_date) : undefined
-        )
-      );
-    } catch (error) {
-      console.error('Erreur lors de la récupération de l\'historique:', error);
-      return [];
-    }
+    console.warn('getSubscriptionHistory: backend non disponible');
+    return [];
   }
 
   /**

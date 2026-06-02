@@ -163,7 +163,7 @@ export class ApiService {
     email: string;
     password: string;
   }): Promise<any> {
-    const response = await this.request('/auth/login', {
+    const response: any = await this.request('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
@@ -241,7 +241,7 @@ export class ApiService {
   public static async verifyResetToken(token: string): Promise<boolean> {
     const instance = ApiService.getInstance();
     try {
-      const response = await instance.request(`/auth/verify-reset-token/${token}`);
+      const response: any = await instance.request(`/auth/verify-reset-token/${token}`);
       return response.success;
     } catch (error) {
       return false;

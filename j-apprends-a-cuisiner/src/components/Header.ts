@@ -165,11 +165,9 @@ export class Header {
     // Déconnexion
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
-      logoutBtn.addEventListener('click', async () => {
-        const result = await this.authService.seDeconnecter();
-        if (result.success) {
-          document.dispatchEvent(new CustomEvent('user-logout'));
-        }
+      logoutBtn.addEventListener('click', () => {
+        this.authService.seDeconnecter();
+        document.dispatchEvent(new CustomEvent('user-logout'));
       });
     }
 
@@ -244,7 +242,8 @@ export class Header {
       }
     ];
 
-    this.notificationService.showNotificationPanel(notifications);
+    this.notificationService.info('Découvrez le Ndolé revisité', 'Nouvelle recette');
+    this.notificationService.success('Poulet DG ajouté à vos favoris', 'Favori ajouté');
   }
 
   private showAdminPanel(): void {

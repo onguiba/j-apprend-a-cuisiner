@@ -320,7 +320,7 @@ export class MealPlanModal {
                 <div class="selector-recipe-image" style="background-image: url('${recipe.getImageURL()}')"></div>
                 <div class="selector-recipe-info">
                   <h4>${recipe.getTitre()}</h4>
-                  <p>${recipe.getRegion()}</p>
+                  <p>${recipe.getRegionAssociee()}</p>
                   <div class="selector-recipe-meta">
                     <span>${recipe.getTempsFormate()}</span>
                     <span>${recipe.getDifficulte()}</span>

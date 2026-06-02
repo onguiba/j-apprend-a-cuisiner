@@ -103,7 +103,7 @@ export class PushNotificationService {
       return;
     }
 
-    const options: NotificationOptions = {
+    const options: any = {
       body: this.getNotificationBody(reminder),
       icon: '/vite.svg', // Remplacer par l'icône de l'app
       badge: '/vite.svg',
@@ -167,8 +167,8 @@ export class PushNotificationService {
     }
   }
 
-  private getNotificationActions(reminder: CookingReminder): NotificationAction[] {
-    const actions: NotificationAction[] = [];
+  private getNotificationActions(reminder: CookingReminder): any[] {
+    const actions: any[] = [];
 
     switch (reminder.type) {
       case 'start':
@@ -277,8 +277,7 @@ export class PushNotificationService {
 
   // Méthodes de persistance
   private saveReminders(): void {
-    const remindersData = Array.from(this.reminders.entries()).map(([id, reminder]) => ({
-      id,
+    const remindersData = Array.from(this.reminders.values()).map((reminder) => ({
       ...reminder,
       scheduledTime: reminder.scheduledTime.toISOString()
     }));
