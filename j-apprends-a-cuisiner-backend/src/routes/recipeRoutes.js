@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const recipeController = require('../controllers/recipeController');
+const recipeController = require('../controllers/recipeController-sqlite');
 const { protect, adminOnly } = require('../middleware/auth');
 
 // Routes publiques
@@ -14,3 +14,4 @@ router.put('/:id', protect, adminOnly, recipeController.updateRecipe);
 router.delete('/:id', protect, adminOnly, recipeController.deleteRecipe);
 
 module.exports = router;
+

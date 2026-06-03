@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const { run, get, all } = require('../config/database-sqlite');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -10,12 +10,12 @@ exports.register = async (req, res) => {
     const { nom, email, password } = req.body;
 
     // Vérifier si l'utilisateur existe déjà
-    const existingUser = await pool.query(
-      'SELECT * FROM users WHERE email = $1',
+    const existingUser = await get(
+      'SELECT * FROM users WHERE email = ?',
       [email]
     );
 
-    if (existingUser.rows.length > 0) {
+    if (existingUser) {
       return res.status(400).json({
         success: false,
         message: 'Cet email est déjà utilisé'
@@ -27,19 +27,18 @@ exports.register = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Créer l'utilisateur
-    const result = await pool.query(
-      `INSERT INTO users (nom, email, password_hash, role)
-       VALUES ($1, $2, $3, 'user')
-       RETURNING id, nom, email, role, created_at`,
+    const result = await run(
+      `INSERT INTO users (nom, email, password_hash, role, created_at)
+       VALUES (?, ?, ?, 'user', datetime('now'))`,
       [nom, email, passwordHash]
     );
 
-    const user = result.rows[0];
+    const user = await get('SELECT id, nom, email, role, created_at FROM users WHERE id = ?', [result.lastID]);
 
     // Générer le token JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'votre-secret-jwt',
       { expiresIn: process.env.JWT_EXPIRE || '7d' }
     );
 
@@ -70,19 +69,17 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     // Vérifier si l'utilisateur existe
-    const result = await pool.query(
-      'SELECT * FROM users WHERE email = $1',
+    const user = await get(
+      'SELECT * FROM users WHERE email = ?',
       [email]
     );
 
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({
         success: false,
         message: 'Email ou mot de passe incorrect'
       });
     }
-
-    const user = result.rows[0];
 
     // Vérifier le mot de passe
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
@@ -97,7 +94,7 @@ exports.login = async (req, res) => {
     // Générer le token JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'votre-secret-jwt',
       { expiresIn: process.env.JWT_EXPIRE || '7d' }
     );
 
@@ -149,8 +146,8 @@ exports.linkFacebook = async (req, res) => {
     const userId = req.user.id;
     const { facebookId, avatarUrl } = req.body;
 
-    await pool.query(
-      'UPDATE users SET facebook_id = $1, avatar_url = COALESCE(avatar_url, $2) WHERE id = $3',
+    await run(
+      'UPDATE users SET facebook_id = ?, avatar_url = COALESCE(avatar_url, ?) WHERE id = ?',
       [facebookId, avatarUrl, userId]
     );
 
@@ -173,12 +170,12 @@ exports.getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const result = await pool.query(
-      'SELECT id, nom, email, role, avatar_url, facebook_id, created_at FROM users WHERE id = $1',
+    const user = await get(
+      'SELECT id, nom, email, role, avatar_url, facebook_id, created_at FROM users WHERE id = ?',
       [userId]
     );
 
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: 'Utilisateur non trouvé'
@@ -187,7 +184,7 @@ exports.getProfile = async (req, res) => {
 
     res.json({
       success: true,
-      user: result.rows[0]
+      user
     });
   } catch (error) {
     console.error('Erreur getProfile:', error);
@@ -205,20 +202,24 @@ exports.updateProfile = async (req, res) => {
     const userId = req.user.id;
     const { nom, avatar_url } = req.body;
 
-    const result = await pool.query(
+    await run(
       `UPDATE users 
-       SET nom = COALESCE($1, nom),
-           avatar_url = COALESCE($2, avatar_url),
-           updated_at = CURRENT_TIMESTAMP
-       WHERE id = $3
-       RETURNING id, nom, email, role, avatar_url`,
+       SET nom = COALESCE(?, nom),
+           avatar_url = COALESCE(?, avatar_url),
+           updated_at = datetime('now')
+       WHERE id = ?`,
       [nom, avatar_url, userId]
+    );
+
+    const user = await get(
+      'SELECT id, nom, email, role, avatar_url FROM users WHERE id = ?',
+      [userId]
     );
 
     res.json({
       success: true,
       message: 'Profil mis à jour',
-      user: result.rows[0]
+      user
     });
   } catch (error) {
     console.error('Erreur updateProfile:', error);
@@ -237,12 +238,10 @@ exports.changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     // Récupérer l'utilisateur
-    const result = await pool.query(
-      'SELECT password_hash, email, nom FROM users WHERE id = $1',
+    const user = await get(
+      'SELECT password_hash, email, nom FROM users WHERE id = ?',
       [userId]
     );
-
-    const user = result.rows[0];
 
     // Vérifier le mot de passe actuel
     const isPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
@@ -259,8 +258,8 @@ exports.changePassword = async (req, res) => {
     const newPasswordHash = await bcrypt.hash(newPassword, salt);
 
     // Mettre à jour
-    await pool.query(
-      'UPDATE users SET password_hash = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+    await run(
+      'UPDATE users SET password_hash = ?, updated_at = datetime(\'now\') WHERE id = ?',
       [newPasswordHash, userId]
     );
 
@@ -269,7 +268,6 @@ exports.changePassword = async (req, res) => {
       await sendPasswordChangedEmail(user.email, user.nom);
     } catch (emailError) {
       console.error('Erreur envoi email confirmation:', emailError);
-      // Ne pas bloquer la réponse si l'email échoue
     }
 
     res.json({
@@ -292,37 +290,34 @@ exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     // Vérifier si l'utilisateur existe
-    const result = await pool.query(
-      'SELECT id, nom, email FROM users WHERE email = $1',
+    const user = await get(
+      'SELECT id, nom, email FROM users WHERE email = ?',
       [email]
     );
 
-    if (result.rows.length === 0) {
-      // Pour des raisons de sécurité, on ne révèle pas si l'email existe ou non
+    if (!user) {
       return res.json({
         success: true,
         message: 'Si cet email existe, un lien de réinitialisation a été envoyé'
       });
     }
 
-    const user = result.rows[0];
-
     // Générer un token sécurisé
     const resetToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
     // Expiration dans 1 heure
-    const expiresAt = new Date(Date.now() + 3600000);
+    const expiresAt = new Date(Date.now() + 3600000).toISOString();
 
-    // Supprimer les anciens tokens non utilisés de cet utilisateur
-    await pool.query(
-      'DELETE FROM password_reset_tokens WHERE user_id = $1 AND used = FALSE',
+    // Supprimer les anciens tokens
+    await run(
+      'DELETE FROM password_reset_tokens WHERE user_id = ? AND used = 0',
       [user.id]
     );
 
-    // Sauvegarder le token dans la base de données
-    await pool.query(
-      'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+    // Sauvegarder le token
+    await run(
+      'INSERT INTO password_reset_tokens (user_id, token, expires_at, used) VALUES (?, ?, ?, 0)',
       [user.id, hashedToken, expiresAt]
     );
 
@@ -337,9 +332,8 @@ exports.forgotPassword = async (req, res) => {
     } catch (emailError) {
       console.error('Erreur envoi email:', emailError);
       
-      // Supprimer le token si l'email n'a pas pu être envoyé
-      await pool.query(
-        'DELETE FROM password_reset_tokens WHERE token = $1',
+      await run(
+        'DELETE FROM password_reset_tokens WHERE token = ?',
         [hashedToken]
       );
       
@@ -370,40 +364,38 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-    // Hasher le token reçu pour le comparer
+    // Hasher le token reçu
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     // Vérifier le token
-    const tokenResult = await pool.query(
+    const tokenData = await get(
       `SELECT prt.*, u.id as user_id, u.email, u.nom 
        FROM password_reset_tokens prt
        JOIN users u ON prt.user_id = u.id
-       WHERE prt.token = $1 AND prt.used = FALSE AND prt.expires_at > NOW()`,
+       WHERE prt.token = ? AND prt.used = 0 AND datetime(prt.expires_at) > datetime('now')`,
       [hashedToken]
     );
 
-    if (tokenResult.rows.length === 0) {
+    if (!tokenData) {
       return res.status(400).json({
         success: false,
         message: 'Token invalide ou expiré'
       });
     }
 
-    const tokenData = tokenResult.rows[0];
-
     // Hasher le nouveau mot de passe
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(newPassword, salt);
 
     // Mettre à jour le mot de passe
-    await pool.query(
-      'UPDATE users SET password_hash = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+    await run(
+      'UPDATE users SET password_hash = ?, updated_at = datetime(\'now\') WHERE id = ?',
       [passwordHash, tokenData.user_id]
     );
 
     // Marquer le token comme utilisé
-    await pool.query(
-      'UPDATE password_reset_tokens SET used = TRUE WHERE token = $1',
+    await run(
+      'UPDATE password_reset_tokens SET used = 1 WHERE token = ?',
       [hashedToken]
     );
 
@@ -444,12 +436,12 @@ exports.verifyResetToken = async (req, res) => {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     // Vérifier le token
-    const result = await pool.query(
-      'SELECT * FROM password_reset_tokens WHERE token = $1 AND used = FALSE AND expires_at > NOW()',
+    const result = await get(
+      'SELECT * FROM password_reset_tokens WHERE token = ? AND used = 0 AND datetime(expires_at) > datetime(\'now\')',
       [hashedToken]
     );
 
-    if (result.rows.length === 0) {
+    if (!result) {
       return res.status(400).json({
         success: false,
         message: 'Token invalide ou expiré'

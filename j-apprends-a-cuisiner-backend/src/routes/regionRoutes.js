@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const regionController = require('../controllers/regionController');
+const regionController = require('../controllers/regionController-sqlite');
 const { protect, adminOnly } = require('../middleware/auth');
 
 // Routes publiques
