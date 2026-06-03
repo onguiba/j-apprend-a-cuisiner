@@ -1,12 +1,15 @@
 {
-  "name": "j-apprends-a-cuisiner-monorepo",
+  "name": "nlamb-sarre",
   "version": "1.0.0",
-  "description": "API Serverless pour J'apprends à Cuisiner",
-  "dependencies": {
-    "pg": "^8.11.3",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.7",
-    "cors": "^2.8.5"
-  }
+  "description": "NLAMB-SARRE - Platform de Recettes Camerounaises",
+  "private": true,
+  "scripts": {
+    "build": "cd j-apprends-a-cuisiner && npm install && npm run build",
+    "start": "cd j-apprends-a-cuisiner && npm start",
+    "dev": "cd j-apprends-a-cuisiner && npm run dev",
+    "backend-dev": "cd j-apprends-a-cuisiner-backend && npm run dev",
+    "backend-start": "cd j-apprends-a-cuisiner-backend && npm start"
+  },
+  "devDependencies": {},
+  "dependencies": {}
 }
