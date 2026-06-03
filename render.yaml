@@ -1,0 +1,35 @@
+services:
+  # Base de données PostgreSQL
+  - type: pserv
+    name: nlamb-sarre-db
+    plan: free
+    ipAllowList: []
+    
+  # Backend API
+  - type: web
+    name: nlamb-sarre-api
+    plan: free
+    runtime: node
+    buildCommand: cd j-apprends-a-cuisiner-backend && npm install
+    startCommand: cd j-apprends-a-cuisiner-backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nlamb-sarre-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://nlamb-sarre.vercel.app
+    
+  # Frontend (optionnel - déployé sur Vercel)
+  # - type: static
+  #   name: nlamb-sarre-frontend
+  #   buildCommand: cd j-apprends-a-cuisiner && npm run build
+  #   staticPublishPath: j-apprends-a-cuisiner/dist

@@ -92,7 +92,18 @@ export class LoginPage {
       messageDiv.className = 'message info';
       messageDiv.textContent = 'Connexion en cours...';
 
-      const response = await this.apiService.login({ email, password });
+      const isLocalMode = import.meta.env.VITE_DATA_MODE === 'local';
+      let response: any;
+
+      if (isLocalMode) {
+        // En mode local, utiliser le AuthService mocké
+        const { AuthService } = await import('../services/AuthService');
+        const authService = AuthService.getInstance();
+        response = await authService.seConnecter({ email, password });
+      } else {
+        // En mode API, utiliser ApiService
+        response = await this.apiService.login({ email, password });
+      }
 
       if (response.success) {
         messageDiv.className = 'message success';
@@ -100,12 +111,16 @@ export class LoginPage {
 
         // Rediriger selon le rôle
         setTimeout(() => {
-          if (response.user.role === 'admin') {
+          const user = response.user || {};
+          if (user.role === 'admin' || email.includes('admin')) {
             window.location.href = '#admin';
           } else {
             window.location.href = '#profile';
           }
         }, 1000);
+      } else {
+        messageDiv.className = 'message error';
+        messageDiv.textContent = response.message || 'Erreur lors de la connexion';
       }
     } catch (error: any) {
       messageDiv.className = 'message error';
