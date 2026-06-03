@@ -1,0 +1,30 @@
+# Dépendances
+node_modules/
+j-apprends-a-cuisiner/node_modules/
+j-apprends-a-cuisiner-backend/node_modules/
+
+# Build
+j-apprends-a-cuisiner/dist/
+
+# Variables d'environnement (NE JAMAIS COMMITTER)
+.env
+.env.local
+.env.production
+j-apprends-a-cuisiner/.env
+j-apprends-a-cuisiner-backend/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
